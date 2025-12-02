@@ -102,6 +102,28 @@ if ( ! function_exists( 'raseth_setup' ) ) :
 			)
 		);
 
+		add_theme_support(
+			'custom-logo',
+			array(
+				'height'      => 250,
+				'width'       => 250,
+				'flex-width'  => true,
+				'flex-height' => true,
+			)
+		);
+
+
+
+
+
+
+
+
+
+
+
+
+
 		// Add theme support for selective refresh for widgets.
 		add_theme_support( 'customize-selective-refresh-widgets' );
 
@@ -222,6 +244,12 @@ require get_template_directory() . '/inc/template-tags.php';
  */
 require get_template_directory() . '/inc/template-functions.php';
 
+/**
+ * CPT Hero Section
+ */
+
+require_once get_template_directory() . '/inc/cpt-hero-section.php';
+
 
 /**
  *custom walker
@@ -238,7 +266,7 @@ class Tailwind_Dropdown_Walker extends Walker_Nav_Menu {
         $output .= '<li class="relative group">';
 
         // Normal link
-        $output .= '<a href="' . esc_attr($item->url) . '" class="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-gray-100 transition-all duration-200 rounded-md hover:bg-white/10 md:px-3 md:py-2">';
+        $output .= '<a href="' . esc_attr($item->url) . '" class="flex items-center justify-between px-4 py-2.5 font-semibold transition-all duration-200 rounded-md hover:bg-white/10 md:px-3 md:py-2">';
 
         $output .= esc_html($item->title);
 
@@ -257,7 +285,7 @@ class Tailwind_Dropdown_Walker extends Walker_Nav_Menu {
     // Dropdown wrapper
     function start_lvl(&$output, $depth = 0, $args = []) {
         $output .= '
-        <ul class="absolute left-0 min-w-max mt-0 pt-2 pb-2 bg-gradient-to-b from-[#1F5F79] to-[#164A62] border border-white/10 rounded-lg shadow-xl backdrop-blur-md hidden group-hover:block z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out">
+        <ul class="absolute left-0 min-w-max mt-0 p-3 pt-5 pb-2 rounded-sm bg-[#2C799A] shadow-xl backdrop-blur-md hidden group-hover:block z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out">
         ';
     }
 

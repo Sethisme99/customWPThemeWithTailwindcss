@@ -9,14 +9,21 @@
 
 ?>
 
-<header id="masthead" class="mb-5">
+<header id="masthead" class="">
 
 <nav id="site-navigation" class="bg-[#2C799A]">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 
     <!-- Logo -->
     <a href="<?php echo home_url(); ?>" class="flex items-center space-x-3 rtl:space-x-reverse">
-		<h1 class="text-white font-bold text-2xl">BrandName</h1>
+	  	<?php
+					if(function_exists('the_custom_logo')){
+						$custom_logo_id = get_theme_mod('custom_logo');
+						$logo = wp_get_attachment_image_src($custom_logo_id);
+					}
+					?>
+
+					<img class="w-35" src="<?php echo $logo[0] ?>" alt="logo" >
     </a>
 
     <!-- Buttons / Mobile Toggle -->
@@ -50,7 +57,7 @@
           'theme_location' => 'menu-1',
           'menu_id'        => 'primary-menu',
           'container'      => false,
-          'menu_class'     => 'font-medium text-[#FFFFFF] flex flex-col p-0 md:p-0 mt-4 gap-5 rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 md:mt-0 md:border-0 md:gap-0 lg:gap-0',
+          'menu_class'     => 'font-medium text-[#FFFFFF] flex flex-col p-0 md:p-0 mt-4 gap-2 rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 md:mt-0 md:border-0 md:gap-0 lg:gap-0',
           'fallback_cb'    => false,
           'walker'         => new Tailwind_Dropdown_Walker(),
         ]);
