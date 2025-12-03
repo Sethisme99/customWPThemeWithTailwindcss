@@ -23,7 +23,7 @@
 					}
 					?>
 
-					<img class="w-35" src="<?php echo $logo[0] ?>" alt="logo" >
+					<img class="w-[150px]" src="<?php echo $logo[0] ?>" alt="logo" >
     </a>
 
     <!-- Buttons / Mobile Toggle -->

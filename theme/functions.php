@@ -167,7 +167,6 @@ add_action( 'widgets_init', 'raseth_widgets_init' );
  */
 function raseth_scripts() {
 	wp_enqueue_style( 'raseth-style', get_stylesheet_uri(), array(), RASETH_VERSION );
-	wp_enqueue_style( 'raseth-css', get_template_directory_uri() . '/css/style.css');
 	wp_enqueue_script( 'raseth-script', get_template_directory_uri() . '/js/script.min.js', array(), RASETH_VERSION, true );
 	wp_enqueue_script( 'raseth-navigation', get_template_directory_uri() . '/js/navigation.js', array(), RASETH_VERSION, true );
 
@@ -251,11 +250,18 @@ require get_template_directory() . '/inc/template-functions.php';
 require_once get_template_directory() . '/inc/cpt-hero-section.php';
 
 
+
+/**
+ * CPT Feature Cards
+ */
+require_once get_template_directory() . '/inc/cpt-feature-cards.php';
+
+
+
+
 /**
  *custom walker
  */
-
-
 class Tailwind_Dropdown_Walker extends Walker_Nav_Menu {
 
     // Add dropdown toggle button if the item has children
@@ -266,14 +272,14 @@ class Tailwind_Dropdown_Walker extends Walker_Nav_Menu {
         $output .= '<li class="relative group">';
 
         // Normal link
-        $output .= '<a href="' . esc_attr($item->url) . '" class="flex items-center justify-between px-4 py-2.5 font-semibold transition-all duration-200 rounded-md hover:bg-white/10 md:px-3 md:py-2">';
+        $output .= '<a href="' . esc_attr($item->url) . '" class="flex items-center justify-between px-4 py-2.5 font-semibold transition-all duration-200 rounded-md hover:bg-white/10 md:px-3 md:py-2"' . ($has_children ? ' data-has-submenu="true"' : '') . '>';
 
         $output .= esc_html($item->title);
 
         // If dropdown exists → add your arrow button
         if ($has_children) {
             $output .= '
-                <svg class="w-4 h-4 ml-2 transition-transform duration-300 ease-out group-hover:rotate-180" 
+                <svg class="w-4 h-4 ml-2 transition-transform duration-300 ease-out group-hover:rotate-180 submenu-toggle" 
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
                 </svg>';
@@ -285,7 +291,7 @@ class Tailwind_Dropdown_Walker extends Walker_Nav_Menu {
     // Dropdown wrapper
     function start_lvl(&$output, $depth = 0, $args = []) {
         $output .= '
-        <ul class="absolute left-0 min-w-max mt-0 p-3 pt-5 pb-2 rounded-sm bg-[#2C799A] shadow-xl backdrop-blur-md hidden group-hover:block z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out">
+        <ul class="absolute left-0 min-w-max mt-0 p-3 pt-5 pb-2 rounded-sm bg-[#2C799A] shadow-xl backdrop-blur-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 ease-out submenu z-50">
         ';
     }
 
@@ -297,4 +303,3 @@ class Tailwind_Dropdown_Walker extends Walker_Nav_Menu {
         $output .= '</li>';
     }
 }
-
