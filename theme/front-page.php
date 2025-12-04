@@ -14,7 +14,7 @@
 get_header();
 ?>
 
-<section id="primary">
+<section id="primary" class="bg-[#2C799A]">
 <main id="main">
 
  <section class="relative text-white overflow-hidden bg-[#2C799A]">
@@ -42,7 +42,7 @@ get_header();
 			$image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large' )[0] ?? '';
 			?>
 			
-				<div class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 lg:gap-30 justify-items-center items-center relative z-10">
+				<div class="max-w-7xl mx-auto px-6 py-[30px] grid md:grid-cols-2 gap-10 lg:gap-30 justify-items-center items-center relative z-10">
 					<!-- LEFT TEXT SECTION -->
 					<div>
 						<p class="uppercase text-sm tracking-wider mb-2 opacity-75"><?php echo esc_html( $subtitle ); ?></p>
@@ -72,14 +72,7 @@ get_header();
 	?>
 
 
-  <!-- Decorative Wave Shape -->
-  <div class="absolute bottom-0 left-0 w-full" style="height: 130px;">
-    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block;">
-      <path fill="#2B1E5A" fill-opacity="1"
-        d="M0,288L60,256C120,224,240,160,360,149.3C480,139,600,181,720,192C840,203,960,181,1080,170.7C1200,160,1320,160,1380,160L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
-      </path>
-    </svg>
-  </div>
+
 
 
 </section>
@@ -90,6 +83,25 @@ get_header();
 <section class="bg-[#2B1E5A] py-20">
   <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
     <?php
+    // Default hardcoded values
+    $default_features = array(
+        array(
+            'title' => '2,769 online courses',
+            'description' => 'The gradual accumulation of information about atomic and small-scale behavior…',
+            'image' => '014-school-1.jpg'
+        ),
+        array(
+            'title' => 'Expert Instruction',
+            'description' => 'The gradual accumulation of information about atomic and small-scale behavior…',
+            'image' => '015-book.jpg'
+        ),
+        array(
+            'title' => 'Training Courses',
+            'description' => 'The gradual accumulation of information about atomic and small-scale behavior…',
+            'image' => '011-health-check-1.jpg'
+        )
+    );
+
     $feature_args = array(
         'post_type' => 'feature_card',
         'posts_per_page' => -1,
@@ -98,6 +110,7 @@ get_header();
     );
     $feature_query = new WP_Query( $feature_args );
 
+    // If database has entries, use them; otherwise use defaults
     if ( $feature_query->have_posts() ) {
         while ( $feature_query->have_posts() ) {
             $feature_query->the_post();
@@ -105,21 +118,40 @@ get_header();
             $title = get_post_meta( get_the_ID(), '_feature_title', true );
             $description = get_post_meta( get_the_ID(), '_feature_description', true );
             $image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'medium' )[0] ?? '';
+            
+            // Fall back to default image if none uploaded
+            if ( empty( $image_url ) ) {
+                $image_url = get_template_directory_uri() . '/img/default-feature.png';
+            }
             ?>
             <div class="bg-white p-8 rounded-lg shadow-xl">
-              <?php if ( $image_url ) : ?>
-                <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $title ); ?>" class="w-[70px] object-cover mb-4 rounded-md">
-              <?php endif; ?>
+              <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $title ); ?>" class="w-[70px] object-cover mb-4 rounded-md">
               <h3 class="font-bold text-lg mb-2"><?php echo esc_html( $title ); ?></h3>
-			  <div><svg width="50" height="2" viewBox="0 0 50 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<rect width="50" height="2" fill="#E74040"/>
-					</svg>
-			  </div>
+              <div><svg width="50" height="2" viewBox="0 0 50 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="50" height="2" fill="#E74040"/>
+                    </svg>
+              </div>
               <p class="text-gray-600"><?php echo esc_html( $description ); ?></p>
             </div>
             <?php
         }
         wp_reset_postdata();
+    } else {
+        // Use default hardcoded values if no database entries
+        foreach ( $default_features as $feature ) {
+            $image_path = get_template_directory_uri() . '/img/' . $feature['image'];
+            ?>
+            <div class="bg-white p-8 rounded-lg shadow-xl">
+              <img src="<?php echo esc_url( $image_path ); ?>" alt="<?php echo esc_attr( $feature['title'] ); ?>" class="w-[70px] object-cover mb-4 rounded-md">
+              <h3 class="font-bold text-lg mb-2"><?php echo esc_html( $feature['title'] ); ?></h3>
+              <div><svg width="50" height="2" viewBox="0 0 50 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="50" height="2" fill="#E74040"/>
+                    </svg>
+              </div>
+              <p class="text-gray-600"><?php echo esc_html( $feature['description'] ); ?></p>
+            </div>
+            <?php
+        }
     }
     ?>
   </div>
@@ -127,8 +159,99 @@ get_header();
 
 
 
+
+<!-- EXPERT TEACHERS SECTION -->
+
+
+<section class="bg-[#1F2B52] py-20 overflow-hidden">
+  <div class="container mx-auto px-6 grid md:grid-cols-2 items-center gap-12">
+
+    <!-- Left Image + Cards -->
+    <div class="relative flex justify-center">
+
+      <!-- Main Image Background -->
+      <div class="bg-[#D9EBEA] rounded-2xl p-6 w-[280px] sm:w-[320px] md:w-auto">
+        <img 
+          src="<?php echo get_template_directory_uri(); ?>/img/technology 1.png" 
+          alt="Teacher"
+          class="w-full max-w-[350px] h-auto object-cover rounded-xl"
+        />
+      </div>
+
+      <!-- Floating Cards WRAPPER for mobile -->
+      <div class="absolute inset-0 pointer-events-none hidden md:block">
+
+        <!-- Card 1 -->
+        <div class="absolute top-20 -left-6">
+          <img 
+            src="<?php echo get_template_directory_uri(); ?>/img/image 10.png" 
+            class="w-[120px] rounded-xl shadow-lg"
+          />
+        </div>
+
+        <!-- Card 2 -->
+        <div class="absolute top-1/2 -right-5 bg-white p-4 rounded-xl shadow-lg w-32">
+          <p class="text-[11px] text-gray-600">Global Statistic</p>
+          <div class="mt-1 flex justify-center">
+            <img src="" alt="Chart">
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="absolute bottom-4 -left-8 bg-white p-4 rounded-xl shadow-lg w-48">
+          <p class="text-[12px] font-semibold">Latest Scores</p>
+          <div class="mt-1 text-[11px] text-gray-600">
+            <p>Singles</p>
+            <p class="flex justify-between"><span>Andrea R.</span><span>6 - 0</span></p>
+            <p class="flex justify-between"><span>Naomi O.</span><span>3 - 6</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Content -->
+    <div class="text-white space-y-6 text-center md:text-left">
+
+      <div>
+        <div class="h-1 w-12 bg-red-400 mb-4 mx-auto md:mx-0"></div>
+        <h2 class="text-3xl sm:text-4xl font-bold leading-snug">
+          Our Experts <br class="hidden md:block"> Teacher
+        </h2>
+      </div>
+
+      <p class="text-gray-300 max-w-md mx-auto md:mx-0">
+        Problems trying to resolve the conflict between the two major realms 
+        of Classical physics: Newtonian mechanics.
+      </p>
+
+      <a href="#" class="inline-flex items-center gap-2 text-purple-400 font-semibold hover:text-purple-300 transition">
+        Learn More 
+        <span>➜</span>
+      </a>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
 </main><!-- #main -->
 </section><!-- #primary -->
+
+
+
+
+
+
+
+
 
 
 <?php
