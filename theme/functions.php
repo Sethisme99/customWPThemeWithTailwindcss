@@ -250,11 +250,17 @@ require get_template_directory() . '/inc/template-functions.php';
 require_once get_template_directory() . '/inc/cpt-hero-section.php';
 
 
-
 /**
  * CPT Feature Cards
  */
 require_once get_template_directory() . '/inc/cpt-feature-cards.php';
+
+/**
+ * CPT Feature Cards
+ */
+
+require_once get_template_directory() . '/inc/cpt-expert-teachers.php';
+
 
 
 

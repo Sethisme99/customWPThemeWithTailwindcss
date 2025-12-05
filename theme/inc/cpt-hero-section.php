@@ -8,7 +8,7 @@ function register_hero_section_cpt() {
         'public' => true,
         'show_in_rest' => true,
         'supports' => array( 'title', 'thumbnail' ),
-        'menu_icon' => 'dashicons-image-alt',
+        'menu_icon' => 'dashicons-columns',
         'has_archive' => false,
     );
     register_post_type( 'hero_section', $args );
