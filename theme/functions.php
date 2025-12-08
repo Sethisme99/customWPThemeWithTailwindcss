@@ -262,7 +262,10 @@ require_once get_template_directory() . '/inc/cpt-feature-cards.php';
 require_once get_template_directory() . '/inc/cpt-expert-teachers.php';
 
 
-
+/**
+ * CPT Affordable Packages
+ */
+require_once get_template_directory() . '/inc/cpt-affordable-packages.php';
 
 
 /**

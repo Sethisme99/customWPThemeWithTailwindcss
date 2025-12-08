@@ -32,7 +32,6 @@ function raseth_register_feature_cards_cpt() {
         'capability_type'    => 'post',
         'has_archive'        => false,
         'hierarchical'       => false,
-        'menu_position'      => 5,
         'menu_icon'          => 'dashicons-layout',
         'supports'           => array( 'title', 'thumbnail' ),
     );

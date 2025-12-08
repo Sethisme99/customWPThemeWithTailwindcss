@@ -173,7 +173,7 @@ get_header();
   <div class="absolute top-0 right-0 w-96 h-96 bg-purple-500 opacity-5 rounded-full blur-3xl"></div>
   <div class="absolute bottom-0 left-0 w-80 h-80 bg-blue-500 opacity-5 rounded-full blur-3xl"></div>
   
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 items-center gap-20 lg:gap-32 relative z-10">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 items-center gap-20 lg:gap-30 relative z-10">
     <?php
     // Default hardcoded fallback data
     $default_teacher = array(
@@ -387,6 +387,132 @@ get_header();
     ?>
   </div>
 </section>
+
+
+
+
+
+<section class="bg-gradient-to-br from-[#1F2B52] to-[#2C3e5a] py-20 lg:py-32 overflow-hidden relative">
+  <!-- Decorative background elements -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-purple-500 opacity-5 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-0 left-0 w-80 h-80 bg-blue-500 opacity-5 rounded-full blur-3xl"></div>
+  
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 items-center gap-20 lg:gap-32 relative z-10">
+<?php
+    // Default hardcoded fallback data
+    $default_package = array(
+        'title' => 'Affordable Packages',
+        'description' => 'Problems trying to resolve the conflict between the two major realms of Classical physics: Newtonian mechanics',
+        'video_url' => get_template_directory_uri() . '/img/kling_20251207_Image_to_Video__4731_0.mp4',
+        'video_poster' => get_template_directory_uri() . '/img/Video card.png',
+        'btn_text' => 'View Profiles',
+        'btn_url' => '#',
+        'accent_color' => '#EF4444'
+    );
+
+    $package_args = array(
+        'post_type' => 'affordable_package',
+        'posts_per_page' => 1,
+        'orderby' => 'date',
+        'order' => 'DESC'
+    );
+    $package_query = new WP_Query( $package_args );
+
+    if ( $package_query->have_posts() ) {
+        while ( $package_query->have_posts() ) {
+            $package_query->the_post();
+            
+            $section_title = get_post_meta( get_the_ID(), '_package_section_title', true ) ?: $default_package['title'];
+            $description = get_post_meta( get_the_ID(), '_package_description', true ) ?: $default_package['description'];
+            $video_id = get_post_meta( get_the_ID(), '_package_video_id', true );
+            $video_url = $video_id ? wp_get_attachment_url( $video_id ) : $default_package['video_url'];
+            $video_poster = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large' )[0] ?? $default_package['video_poster'];
+            $btn_text = get_post_meta( get_the_ID(), '_package_btn_text', true ) ?: $default_package['btn_text'];
+            $btn_url = get_post_meta( get_the_ID(), '_package_btn_url', true ) ?: $default_package['btn_url'];
+            $accent_color = get_post_meta( get_the_ID(), '_package_accent_color', true ) ?: $default_package['accent_color'];
+            ?>
+
+    <!-- left Content -->
+    <div class="text-white space-y-8 text-center md:text-left">
+      <div>
+        <div class="h-1 w-16 mb-6 mx-auto md:mx-0 rounded-full" style="background-color: <?php echo esc_attr( $accent_color ); ?>;"></div>
+        <h2 class="text-4xl sm:text-5xl font-bold leading-tight">
+          <?php echo esc_html( $section_title ); ?>
+        </h2>
+      </div>
+
+      <p class="text-gray-300 max-w-lg mx-auto md:mx-0 leading-relaxed text-lg">
+        <?php echo esc_html( $description ); ?>
+      </p>
+
+      <div class="flex justify-center md:justify-start pt-4">
+        <a href="<?php echo esc_url( $btn_url ); ?>" class="inline-flex items-center justify-center gap-3 text-[#8D5CF6] font-semibold hover:underline transition-all duration-200">
+          <?php echo esc_html( $btn_text ); ?>
+        </a>
+      </div>
+    </div>
+
+    <!-- right Content -->
+    <div class="relative flex justify-center items-center">
+      <div class="bg-black rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300 w-full max-w-[500px]">
+        <video 
+          class="w-full h-auto object-cover rounded-2xl" 
+          controls 
+          poster="<?php echo esc_url( $video_poster ); ?>">
+          <source src="<?php echo esc_url( $video_url ); ?>" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>  
+      </div>
+    </div>
+
+            <?php
+        }
+        wp_reset_postdata();
+    } else {
+        ?>
+    <!-- left Content -->
+    <div class="text-white space-y-8 text-center md:text-left">
+      <div>
+        <div class="h-1 w-16 mb-6 mx-auto md:mx-0 rounded-full" style="background-color: <?php echo esc_attr( $default_package['accent_color'] ); ?>;"></div>
+        <h2 class="text-4xl sm:text-5xl font-bold leading-tight">
+          <?php echo esc_html( $default_package['title'] ); ?>
+        </h2>
+      </div>
+
+      <p class="text-gray-300 max-w-lg mx-auto md:mx-0 leading-relaxed text-lg">
+        <?php echo esc_html( $default_package['description'] ); ?>
+      </p>
+
+      <div class="flex justify-center md:justify-start pt-4">
+        <a href="<?php echo esc_url( $default_package['btn_url'] ); ?>" class="inline-flex items-center justify-center gap-3 text-[#8D5CF6] font-semibold hover:underline transition-all duration-200">
+          <?php echo esc_html( $default_package['btn_text'] ); ?>
+        </a>
+      </div>
+    </div>
+
+    <!-- right Content -->
+    <div class="relative flex justify-center items-center">
+      <!-- Main Image Background -->
+      <div class="bg-black rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300 w-full max-w-[500px]">
+        <video 
+          class="w-full h-auto object-cover rounded-2xl" 
+          controls 
+          poster="<?php echo esc_url( $default_package['video_poster'] ); ?>">
+          <source src="<?php echo esc_url( $default_package['video_url'] ); ?>" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>  
+      </div>
+    </div>
+    <!-- Same as above but using $default_package -->
+        <?php
+    }
+        ?>
+  </div>
+</section>
+
+
+
+
 
 
 
