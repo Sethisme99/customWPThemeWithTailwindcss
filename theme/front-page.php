@@ -512,7 +512,198 @@ get_header();
 
 
 
+<section class="bg-[#1f2b4d] py-20">
+  <div class="max-w-7xl mx-auto px-4">
 
+    <!-- Header -->
+    <div class="mb-14">
+      <p class="text-purple-400 font-semibold tracking-wide mb-2">
+        Practice Advice
+      </p>
+      <h2 class="text-white text-4xl md:text-5xl font-bold mb-4">
+        Our Popular Courses
+      </h2>
+      <p class="text-slate-300 max-w-lg leading-relaxed">
+        Problems trying to resolve the conflict between the two major realms of Classical physics: Newtonian mechanics
+      </p>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <?php
+      $course_args = array(
+          'post_type'      => 'popular_course',
+          'posts_per_page' => 3,
+          'orderby'        => 'date',
+          'order'          => 'DESC',
+      );
+      $course_query = new WP_Query( $course_args );
+
+      // Default hardcoded fallback data
+      $default_courses = array(
+          array(
+              'title' => '2,769 online courses',
+              'category' => 'For Better Future',
+              'rating' => '4.9',
+              'description' => 'We focus on ergonomics and meeting you where you work. It\'s only a keystroke away.',
+              'sales' => '15',
+              'original_price' => '16.48',
+              'sale_price' => '6.48',
+              'image' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f',
+              'url' => '#'
+          ),
+          array(
+              'title' => 'Training Courses',
+              'category' => 'Welcome',
+              'rating' => '4.9',
+              'description' => 'We focus on ergonomics and meeting you where you work. It\'s only a keystroke away.',
+              'sales' => '15',
+              'original_price' => '16.48',
+              'sale_price' => '6.48',
+              'image' => 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f',
+              'url' => '#'
+          ),
+          array(
+              'title' => 'Books Library',
+              'category' => 'Welcome',
+              'rating' => '4.9',
+              'description' => 'We focus on ergonomics and meeting you where you work. It\'s only a keystroke away.',
+              'sales' => '15',
+              'original_price' => '16.48',
+              'sale_price' => '6.48',
+              'image' => 'https://images.unsplash.com/photo-1512820790803-83ca734da794',
+              'url' => '#'
+          )
+      );
+
+      // Check if database has entries
+      if ( $course_query->have_posts() ) {
+          // Use database entries
+          while ( $course_query->have_posts() ) {
+              $course_query->the_post();
+              
+              $category = get_post_meta( get_the_ID(), '_course_category', true ) ?: 'Course';
+              $rating = get_post_meta( get_the_ID(), '_course_rating', true ) ?: '4.9';
+              $description = get_post_meta( get_the_ID(), '_course_description', true ) ?: get_the_excerpt();
+              $sales_count = get_post_meta( get_the_ID(), '_course_sales', true ) ?: '15';
+              $original_price = get_post_meta( get_the_ID(), '_course_original_price', true ) ?: '16.48';
+              $sale_price = get_post_meta( get_the_ID(), '_course_sale_price', true ) ?: '6.48';
+              $button_url = get_post_meta( get_the_ID(), '_course_button_url', true ) ?: get_permalink();
+              $image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large' )[0] ?? 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f';
+              $title = get_the_title();
+              ?>
+
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden group hover:-translate-y-2 transition-all duration-300">
+        <div class="relative h-60 overflow-hidden">
+
+          <span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded z-10">
+            Sale
+          </span>
+
+          <img
+            src="<?php echo esc_url( $image_url ); ?>"
+            alt="<?php echo esc_attr( $title ); ?>"
+            class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+          />
+
+          <!-- Hover Icons -->
+          <div class="absolute inset-0 flex items-center justify-center gap-4 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300">
+            <button class="bg-white p-3 rounded-full hover:scale-110 transition">❤️</button>
+            <button class="bg-white p-3 rounded-full hover:scale-110 transition">🛒</button>
+            <button class="bg-white p-3 rounded-full hover:scale-110 transition">👁</button>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-purple-500 font-semibold text-sm"><?php echo esc_html( $category ); ?></span>
+            <span class="bg-indigo-900 text-white text-xs px-2 py-1 rounded">⭐ <?php echo esc_html( $rating ); ?></span>
+          </div>
+
+          <h3 class="font-bold text-lg mb-2"><?php echo esc_html( $title ); ?></h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-4">
+            <?php echo esc_html( $description ); ?>
+          </p>
+
+          <div class="flex items-center gap-2 text-gray-500 text-sm mb-4">
+            ⬇ <?php echo esc_html( $sales_count ); ?> Sales
+          </div>
+
+          <div class="flex items-center gap-3 mb-5">
+            <span class="line-through text-gray-400">$<?php echo esc_html( $original_price ); ?></span>
+            <span class="text-orange-500 font-bold">$<?php echo esc_html( $sale_price ); ?></span>
+          </div>
+
+          <a href="<?php echo esc_url( $button_url ); ?>" class="border border-purple-500 text-purple-500 px-5 py-2 rounded-full font-semibold hover:bg-purple-500 hover:text-white transition inline-block">
+            Learn More →
+          </a>
+        </div>
+      </div>
+
+              <?php
+          }
+          wp_reset_postdata();
+      } else {
+          // Use hardcoded defaults if no database entries
+          foreach ( $default_courses as $course ) {
+              ?>
+
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden group hover:-translate-y-2 transition-all duration-300">
+        <div class="relative h-60 overflow-hidden">
+
+          <span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded z-10">
+            Sale
+          </span>
+
+          <img
+            src="<?php echo esc_url( $course['image'] ); ?>"
+            alt="<?php echo esc_attr( $course['title'] ); ?>"
+            class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+          />
+
+          <!-- Hover Icons -->
+          <div class="absolute inset-0 flex items-center justify-center gap-4 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300">
+            <button class="bg-white p-3 rounded-full hover:scale-110 transition">❤️</button>
+            <button class="bg-white p-3 rounded-full hover:scale-110 transition">🛒</button>
+            <button class="bg-white p-3 rounded-full hover:scale-110 transition">👁</button>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-purple-500 font-semibold text-sm"><?php echo esc_html( $course['category'] ); ?></span>
+            <span class="bg-indigo-900 text-white text-xs px-2 py-1 rounded">⭐ <?php echo esc_html( $course['rating'] ); ?></span>
+          </div>
+
+          <h3 class="font-bold text-lg mb-2"><?php echo esc_html( $course['title'] ); ?></h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-4">
+            <?php echo esc_html( $course['description'] ); ?>
+          </p>
+
+          <div class="flex items-center gap-2 text-gray-500 text-sm mb-4">
+            ⬇ <?php echo esc_html( $course['sales'] ); ?> Sales
+          </div>
+
+          <div class="flex items-center gap-3 mb-5">
+            <span class="line-through text-gray-400">$<?php echo esc_html( $course['original_price'] ); ?></span>
+            <span class="text-orange-500 font-bold">$<?php echo esc_html( $course['sale_price'] ); ?></span>
+          </div>
+
+          <a href="<?php echo esc_url( $course['url'] ); ?>" class="border border-purple-500 text-purple-500 px-5 py-2 rounded-full font-semibold hover:bg-purple-500 hover:text-white transition inline-block">
+            Learn More →
+          </a>
+        </div>
+      </div>
+
+              <?php
+          }
+      }
+      ?>
+    </div>
+  </div>
+</section>
 
 
 

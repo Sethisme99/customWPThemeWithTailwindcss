@@ -267,6 +267,12 @@ require_once get_template_directory() . '/inc/cpt-expert-teachers.php';
  */
 require_once get_template_directory() . '/inc/cpt-affordable-packages.php';
 
+/**
+ * CPT Popular Courses
+ */
+
+require get_template_directory() . '/inc/cpt-popular-courses.php';
+
 
 /**
  *custom walker
