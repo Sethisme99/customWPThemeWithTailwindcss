@@ -549,7 +549,7 @@ get_header();
               'sales' => '15',
               'original_price' => '16.48',
               'sale_price' => '6.48',
-              'image' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f',
+              'image' => '',
               'url' => '#'
           ),
           array(
@@ -560,7 +560,7 @@ get_header();
               'sales' => '15',
               'original_price' => '16.48',
               'sale_price' => '6.48',
-              'image' => 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f',
+              'image' => '',
               'url' => '#'
           ),
           array(
@@ -571,7 +571,7 @@ get_header();
               'sales' => '15',
               'original_price' => '16.48',
               'sale_price' => '6.48',
-              'image' => 'https://images.unsplash.com/photo-1512820790803-83ca734da794',
+              'image' => '',
               'url' => '#'
           )
       );
@@ -704,6 +704,154 @@ get_header();
     </div>
   </div>
 </section>
+
+
+
+
+<section class="bg-[#1f2b4d] py-24">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Header -->
+    <div class="mb-16 max-w-xl">
+      <p class="text-purple-400 font-semibold tracking-wide mb-2">
+        Practice Advice
+      </p>
+      <h2 class="text-white text-4xl md:text-5xl font-bold mb-4">
+        Affordable Packages
+      </h2>
+      <p class="text-slate-300 leading-relaxed">
+        Problems trying to resolve the conflict between the two major realms of Classical physics: Newtonian mechanics
+      </p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <?php
+      // Default hardcoded testimonials
+      $default_testimonials = array(
+          array(
+              'rating' => 4,
+              'content' => 'Slate helps you see how many more days you need to work to reach your financial goal for the month and year.',
+              'author_name' => 'Regina Miles',
+              'author_role' => 'Designer',
+              'image' => 'https://randomuser.me/api/portraits/men/32.jpg'
+          ),
+          array(
+              'rating' => 4,
+              'content' => 'Slate helps you see how many more days you need to work to reach your financial goal for the month and year.',
+              'author_name' => 'Regina Miles',
+              'author_role' => 'Designer',
+              'image' => 'https://randomuser.me/api/portraits/women/44.jpg'
+          ),
+          array(
+              'rating' => 4,
+              'content' => 'Slate helps you see how many more days you need to work to reach your financial goal for the month and year.',
+              'author_name' => 'Regina Miles',
+              'author_role' => 'Designer',
+              'image' => 'https://randomuser.me/api/portraits/women/65.jpg'
+          )
+      );
+
+      $testimonial_args = array(
+          'post_type' => 'testimonial',
+          'posts_per_page' => 3,
+          'orderby' => 'date',
+          'order' => 'DESC'
+      );
+      $testimonial_query = new WP_Query( $testimonial_args );
+
+      // Use database entries if they exist, otherwise use defaults
+      if ( $testimonial_query->have_posts() ) {
+          while ( $testimonial_query->have_posts() ) {
+              $testimonial_query->the_post();
+              
+              $rating = get_post_meta( get_the_ID(), '_testimonial_rating', true ) ?: 4;
+              $content = get_post_meta( get_the_ID(), '_testimonial_content', true );
+              $author_name = get_post_meta( get_the_ID(), '_testimonial_author_name', true );
+              $author_role = get_post_meta( get_the_ID(), '_testimonial_author_role', true );
+              $image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'medium' )[0] ?? 'https://randomuser.me/api/portraits/men/1.jpg';
+              
+              // Generate star display
+              $stars = str_repeat( '★ ', $rating ) . str_repeat( '☆ ', 5 - $rating );
+              ?>
+
+      <div class="bg-white rounded-xl p-10 text-center shadow-md">
+        <!-- Stars -->
+        <div class="flex justify-center mb-6 text-yellow-400 text-xl">
+          <?php echo esc_html( trim( $stars ) ); ?>
+        </div>
+
+        <!-- Text -->
+        <p class="text-gray-600 leading-relaxed mb-10">
+          <?php echo esc_html( $content ); ?>
+        </p>
+
+        <!-- Profile -->
+        <div class="flex items-center justify-center gap-4">
+          <img
+            src="<?php echo esc_url( $image_url ); ?>"
+            alt="<?php echo esc_attr( $author_name ); ?>"
+            class="w-12 h-12 rounded-full object-cover"
+            width="48"
+            height="48"
+            loading="lazy"
+          />
+          <div class="text-left">
+            <p class="text-purple-600 font-semibold"><?php echo esc_html( $author_name ); ?></p>
+            <p class="text-gray-500 text-sm"><?php echo esc_html( $author_role ); ?></p>
+          </div>
+        </div>
+      </div>
+
+              <?php
+          }
+          wp_reset_postdata();
+      } else {
+          // Display default testimonials
+          foreach ( $default_testimonials as $testimonial ) {
+              $stars = str_repeat( '★ ', $testimonial['rating'] ) . str_repeat( '☆ ', 5 - $testimonial['rating'] );
+              ?>
+
+      <div class="bg-white rounded-xl p-10 text-center shadow-md">
+        <!-- Stars -->
+        <div class="flex justify-center mb-6 text-yellow-400 text-xl">
+          <?php echo esc_html( trim( $stars ) ); ?>
+        </div>
+
+        <!-- Text -->
+        <p class="text-gray-600 leading-relaxed mb-10">
+          <?php echo esc_html( $testimonial['content'] ); ?>
+        </p>
+
+        <!-- Profile -->
+        <div class="flex items-center justify-center gap-4">
+          <img
+            src="<?php echo esc_url( $testimonial['image'] ); ?>"
+            alt="<?php echo esc_attr( $testimonial['author_name'] ); ?>"
+            class="w-12 h-12 rounded-full object-cover"
+            width="48"
+            height="48"
+            loading="lazy"
+          />
+          <div class="text-left">
+            <p class="text-purple-600 font-semibold"><?php echo esc_html( $testimonial['author_name'] ); ?></p>
+            <p class="text-gray-500 text-sm"><?php echo esc_html( $testimonial['author_role'] ); ?></p>
+          </div>
+        </div>
+      </div>
+
+              <?php
+          }
+      }
+      ?>
+    </div>
+  </div>
+</section>
+
+
+
+
+
 
 
 
