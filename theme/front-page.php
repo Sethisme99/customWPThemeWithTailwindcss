@@ -850,6 +850,78 @@ get_header();
 
 
 
+<section class="bg-indigo-950 px-6 py-20">
+    <div class="mx-auto max-w-3xl text-center text-white">
+
+        <!-- Label -->
+        <p class="mb-3 text-sm uppercase tracking-widest text-purple-400">
+            Newsletter
+        </p>
+
+        <!-- Title -->
+        <h2 class="mb-4 text-3xl font-bold sm:text-4xl">
+            Every Client Matters
+        </h2>
+
+        <!-- Description -->
+        <p class="mx-auto mb-8 max-w-xl text-sm text-indigo-200 sm:text-base">
+            Problems trying to resolve the conflict between the two major
+            realms of classical physics: Newtonian mechanics
+        </p>
+
+        <!-- Form -->
+        <form id="newsletter-form" class="flex flex-col items-center gap-3 sm:flex-row">
+            <input
+                type="email"
+                id="newsletter-email"
+                placeholder="Your Email"
+                required
+                class="w-full flex-1 rounded-md px-4 py-3 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+
+            <button
+                type="submit"
+                id="newsletter-btn"
+                class="w-full rounded-md bg-purple-600 px-6 py-3 font-semibold text-white transition hover:bg-purple-700 sm:w-auto"
+            >
+                Subscribe
+            </button>
+        </form>
+
+        <div id="newsletter-message" style="margin-top: 15px; display: none;"></div>
+    </div>
+</section>
+
+<script>
+document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('newsletter-email').value;
+    const btn = document.getElementById('newsletter-btn');
+    const msg = document.getElementById('newsletter-message');
+
+    btn.disabled = true;
+    btn.textContent = 'Subscribing...';
+
+    fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'action=newsletter_subscribe&email=' + encodeURIComponent(email)
+    })
+    .then(r => r.json())
+    .then(data => {
+        msg.style.display = 'block';
+        msg.style.color = data.success ? '#10b981' : '#ef4444';
+        msg.textContent = data.message;
+        
+        if (data.success) {
+            document.getElementById('newsletter-email').value = '';
+        }
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+    });
+});
+</script>
+
 
 
 

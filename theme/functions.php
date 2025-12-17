@@ -282,6 +282,16 @@ require_once get_template_directory() . '/inc/cpt-testimonial.php';
 
 
 /**
+ * CPT Subscribe Newsletter
+ */
+
+require_once get_template_directory() . '/inc/cpt-newsletter.php';
+
+
+
+
+
+/**
  *custom walker
  */
 class Tailwind_Dropdown_Walker extends Walker_Nav_Menu {
